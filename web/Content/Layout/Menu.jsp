@@ -3,7 +3,13 @@
     Created on : 25/04/2019, 20:06:25
     Author     : 03728827142
 --%>
-
+<jsp:useBean id="user" scope="session" class="br.com.sigos.model.Funcionario" />
+<jsp:useBean id="cliente" scope="session" class="br.com.sigos.model.Cliente" />
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${empty user.nome && empty cliente.nome}" >
+    <jsp:forward page="../../index.jsp" />
+    <jsp
+</c:if>
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -50,8 +56,8 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Menu O.S:</h6>
 
-            <a class="collapse-item" href="listaOS.jsp">Todas Ordens de Serviço</a>
-            <a class="collapse-item" href="ordemServicoServlet?acao=nova">Nova Ordem de Serviço</a>
+            <a class="collapse-item" href="ordemServicoServlet?acao=listar">Todas Ordens de Serviço</a>
+            <a class="collapse-item" href="ordemServicoServlet?acao=clientes">Nova Ordem de Serviço</a>
             <a class="collapse-item" href="tecnicoOS.jsp">Suas Ordens de Serviço</a>
 
             
@@ -85,14 +91,16 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Menu Clientes</h6>
             <a class="collapse-item" href="ClienteServlet?acao=listar">Todos Clientes</a>
+            <c:if test="${user.funcao != 'Técnico'}">
             <a class="collapse-item" href="ClienteServlet?acao=nova">Cadastrar Clientes</a>
+            </c:if>
           </div>
         </div>
       </li>
       
       
       
-      
+      <c:if test="${user.funcao == 'Técnico' || user.funcao == 'Administrador'}">
             <!-- Nav Item - FUNCIONÀRIOS MENU -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFunc" aria-expanded="true" aria-controls="collapseClients">
@@ -107,7 +115,7 @@
           </div>
         </div>
       </li>
-      
+      </c:if>
       
       
       
@@ -175,8 +183,8 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+<!--           Topbar Search 
+          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET" >
             <div class="input-group">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Procurar..." aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
@@ -185,7 +193,7 @@
                 </button>
               </div>
             </div>
-          </form>
+          </form>-->
 
 
 
@@ -294,17 +302,17 @@
             <!-- Nav Item - USUÁRIO LOGADO -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valdimares Técnico</span>
+                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">${user.nome}</span>
                 <img class="img-profile rounded-circle" src="https://www.rj.senac.br/wp-content/uploads/2017/05/tecnico-em-informatica-2-377x377.jpg">
               </a>
               <!-- Dropdown - INFORMAÇÕES DO USUÁRIO LOGADO -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="emConstrucao.jsp">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Sua conta
                 </a>
 
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="emConstrucao.jsp">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Atividades
                 </a>

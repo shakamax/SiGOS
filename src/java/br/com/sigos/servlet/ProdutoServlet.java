@@ -63,7 +63,7 @@ public class ProdutoServlet extends HttpServlet {
                 prodCat.setIdProduto(idProduto);
 
                 String[] c = request.getParameterValues("cat[]");
-
+                
                 if (!c.equals("")){
 
                     for(int a = 0; a < c.length; a++)
@@ -74,7 +74,7 @@ public class ProdutoServlet extends HttpServlet {
                         jp.inserirCategoria(prodCat);
                     }
 
-                } 
+                }
                 
                 
             } else {
@@ -89,7 +89,7 @@ public class ProdutoServlet extends HttpServlet {
 
                 String[] c = request.getParameterValues("cat[]");
 
-                if (!c.equals("")){
+                if (c != null){
 
                     for(int a = 0; a < c.length; a++)
                     {

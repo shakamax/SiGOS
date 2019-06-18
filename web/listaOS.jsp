@@ -6,6 +6,9 @@
 
 <jsp:include page="Content/Layout/Header.jsp" />
 <jsp:include page="Content/Layout/Menu.jsp" />
+<jsp:useBean id="os" scope="session" class="br.com.sigos.model.ordemServico" />
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="container-fluid">
   
@@ -15,134 +18,32 @@
         </div>
         <div class="card-body">
             
-            
-            
-          <div class="row">
+        <div class="row">
+        <c:forEach items="${listaOS}" var="os">
             <div class="col-3">
                 <div class="card">
-                    <div class="card-header">OS 150 235</div>
+                    <div class="card-header text-gray-100 <c:if test="${os.status}" > bg-gradient-warning </c:if> <c:if test="${!os.status}">bg-gradient-success</c:if>"> <strong>OS </strong> : ${os.numOS} </div>
                     <div class="card-body">
-                        Cliente Tal
+                        <strong> Cliente : </strong> ${os.cliente.nome}
                     </div>
                       <ul class="list-group list-group-flush">
-                          <li class="list-group-item" row="2"> <b>Equipamento :</b>  Acer VX5, I5, 16GB RAM </li>
-                          <li class="list-group-item"> <b>Técnico :</b> Valdimar </li>
-                          <li class="list-group-item"> <b>Status :</b> Aberta </li>
-                          <li class="list-group-item"><b>Última atualização :</b> Criada em 30/04/2019</li>
-                      </ul>
+                          <li class="list-group-item" style="height: 80px;"> <strong>Equipamento :</strong>  ${os.listaEquipamentos.equipamento} </li>
+                          <li class="list-group-item"> <strong> Status :</strong> <c:if test="${os.status}"> <span class="badge badge-warning"> Aberta </span></c:if> <c:if test="${!os.status}"> <span class="badge-success" > Fechado </span></c:if>  </li>
+                          <li class="list-group-item" style="height: 100px;"><strong>Última atualização <fmt:formatDate value="${os.log.dataHora}" type="both"  pattern="dd/MM/yyyy HH:mm" /> : </strong> ${os.log.descricao}</li>
+                      </ul> 
                     <div class="card-body">
-                        <a title="Gerenciar O.S." class="btn bg-gradient-info" style="color: white;" href="gerenciarOS.jsp">
-                            <i class="fas fa-list-alt"></i>
+                        <a title="Gerenciar O.S." class="btn bg-gradient-info float-right" style="color: white;" href="ordemServicoServlet?acao=gerenciar&id=${os.numOS}" >
+                            Gerenciar O.S <i class="fas fa-list-alt"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">OS 150 234</div>
-                    <div class="card-body">
-                        Fulano
-                    </div>
-                      <ul class="list-group list-group-flush">
-                          <li class="list-group-item"> <b>Equipamento :</b> Lenovo Ideapad 320, I7,  8GB RAM </li>
-                          <li class="list-group-item"> <b>Técnico :</b> Guilherme </li>
-                          <li class="list-group-item"> <b>Status :</b> Fechado </li>
-                          <li class="list-group-item"><b>Última atualização :</b> Concluída dia 29/04/2019</li>
-                      </ul>
-                    <div class="card-body">
-                        <button title="Gerenciar OS" class="btn bg-gradient-info" style="color: white;" action="#">
-                            <i class="fas fa-list-alt"></i>
-                        </button>
-                    </div>
-                    
-            <%-- DIV QUE FECHA A CARD OS --%>
-                </div>
-                
-            <%-- DIV QUE FECHA A COL --%>
-            </div>
-            
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">OS 150 233</div>
-                    <div class="card-body">
-                        Ciclano
-                    </div>
-                      <ul class="list-group list-group-flush">
-                          <li class="list-group-item"> <b>Equipamento :</b> Desktop 13, Positivo, 4GB RAM  </li>
-                          <li class="list-group-item"> <b>Técnico :</b> Geovane </li>
-                          <li class="list-group-item"> <b>Status :</b> Fechado </li>
-                          <li class="list-group-item"><b>Última atualização :</b> Concluída dia 28/04/2019</li>
-                      </ul>
-                    <div class="card-body">
-                        <button title="Gerenciar OS" class="btn bg-gradient-info" style="color: white;" action="#">
-                            <i class="fas fa-list-alt"></i>
-                        </button>
-                    </div>
-                    
-            <%-- DIV QUE FECHA A CARD OS --%>
-                </div>
-                
-            <%-- DIV QUE FECHA A COL --%>
-            </div>
-            
-            
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">OS 150 232</div>
-                    <div class="card-body">
-                        Beltrano
-                    </div>
-                      <ul class="list-group list-group-flush">
-                          <li class="list-group-item"> <b>Equipamento :</b> Desktop 15, CoolerMaster, 8GB RAM  </li>
-                          <li class="list-group-item"> <b>Técnico :</b> Valdimar </li>
-                          <li class="list-group-item"> <b>Status :</b> Fechado </li>
-                          <li class="list-group-item"><b>Última atualização :</b> Concluída dia 28/04/2019</li>
-                      </ul>
-                    <div class="card-body">
-                        <button title="Gerenciar OS" class="btn bg-gradient-info" style="color: white;" action="#">
-                            <i class="fas fa-list-alt"></i>
-                        </button>
-                    </div>
-                    
-            <%-- DIV QUE FECHA A CARD OS --%>
-                </div>
-                
-            <%-- DIV QUE FECHA A COL --%>
-            </div>
-            
+            <br>
+          </c:forEach>    
+          
         <%-- DIV QUE FECHA A ROW --%>
         </div>
         
-        <div class="row">
-            
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">OS 150 231</div>
-                    <div class="card-body">
-                        Carlos Eduardo
-                    </div>
-                      <ul class="list-group list-group-flush">
-                          <li class="list-group-item"> <b>Equipamento :</b> Impressora HP, Multifuncional Deskjet ADV 2136  </li>
-                          <li class="list-group-item"> <b>Técnico :</b> Geovane </li>
-                          <li class="list-group-item"> <b>Status :</b> Fechado </li>
-                          <li class="list-group-item"><b>Última atualização :</b> Concluída dia 25/04/2019</li>
-                      </ul>
-                    <div class="card-body">
-                        <button title="Gerenciar OS" class="btn bg-gradient-info" style="color: white;" action="#">
-                            <i class="fas fa-list-alt"></i>
-                        </button>
-                    </div>
-                    
-            <%-- DIV QUE FECHA A CARD OS --%>
-                </div>
-                
-            <%-- DIV QUE FECHA A COL --%>
-            </div>
-            
-            
-            <%-- DIV QUE FECHA A ROW --%>
-          </div>
           
             <%--DIV QUE FECHA O BODY CARD PRINCIPAL --%>
         </div>

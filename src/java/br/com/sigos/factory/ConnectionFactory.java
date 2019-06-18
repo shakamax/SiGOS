@@ -20,15 +20,15 @@ public class ConnectionFactory {
     public static Connection getConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            // link jdbc do localhost, banco de dados, usuário, e por fim senha.     jdbc:mysql://localhost:3306/?user=root
+            // link jdbc do localhost, banco de dados, usuário, e por fim senha.   jdbc:mysql://localhost:3306/?timeZone=utc user=root
 
-            return  DriverManager.getConnection("jdbc:mysql://localhost/sigosbd?timeZone=utc", "root", "");
+            return  DriverManager.getConnection("jdbc:mysql://localhost/sigosbd?serverTimezone=UTC", "root", "senac");
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException("Erro com conexão do banco de dados.", ex);
+            throw new RuntimeException("Erro com conexão do banco de dados." + ex.getMessage(), ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException("Erro, classe não encontrada: DRIVER MYSQL", ex);
+            throw new RuntimeException("Erro, classe não encontrada: DRIVER MYSQL" + ex.getMessage(), ex);
         }
         
         

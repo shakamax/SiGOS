@@ -34,15 +34,15 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Pronto para sair?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">Deseja realmente realizar Logout?</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="index.jsp">Logout</a>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            <a class="btn btn-primary" href="LoginServlet?acao=logout">Logout</a>
         </div>
       </div>
     </div>
@@ -125,27 +125,49 @@ $(".CEP").mask("99999-999");
     	});
 	});
         
-        $('#cliente_i').change(function() {
-    	var id_cliente = $(this).val();
+        $('#listaeq').change(function() {
+    	var id = $(this).val();
     	$.ajax({
-        	url: "ordemServicoServlet?acao=mudarCliente&id_cliente=" + id,
-        	type: 'POST',
-        	dataType: 'json',
+        	url: "ordemServicoServlet?acao=mudarLista&id=" + id,
+        	type: 'GET',
+        	//dataType: 'json',
         	beforeSend: function () {
-            	$('#listaeq').val("0");
                 $('#loading').show();
+                $('#defeito').hide();
         	},
         	success: function (data) {
                 $('#loading').hide();
-            	$('#logradouro').val(data.logradouro);
-            	$('#bairro').val(data.bairro);
-            	$('#localidade').val(data.localidade);
-            	$('#uf').val(data.uf);
+                $('#defeito').show();
+                $('#defeito').val(data);
         	}
     	});
 	});
+        
+        function validarSenha() {
+            var senha = FormSenha.senha.value;
+            var senha2 = FormSenha.senha2.value;
+            
+            if(senha == "" || senha.length < 5){
+                alert('Senha deve conter pelo menos 5 caracteres.');
+                FormSenha.senha.focus();
+                return false;
+            }
+            if(senha2 == "" || senha2.length < 5){
+                alert('Senha deve conter pelo menos 5 caracteres.');
+                FormSenha.senha2.focus();
+                return false;
+            }
+            if(senha != senha2){
+                alert('Senhas estão diferentes, por favor verifique sua senha.');
+                FormSenha.senha2.focus();
+                $('#conf').show();
+                return false;
+            }
+            
+         }
+    
+        
 </script>
-
 
   
 </body>

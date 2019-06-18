@@ -22,11 +22,15 @@ public class ordemServico {
     private Date prazoEntrega;
     private List<Servico> servicos;
     private List<Produto> produtos;
-    private List<LogOS> logOS;
+    private List<LogOs> logOS;
+    private LogOs log;
     private String garantia;
     private ListaEquipamento listaEquipamentos;
     private boolean status;
 
+    
+    
+    
     public int getNumOS() {
         return numOS;
     }
@@ -109,12 +113,26 @@ public class ordemServico {
         this.produtos = produtos;
     }
 
-    public List<LogOS> getLogOS() {
+    public List<LogOs> getLogOS() {
         return logOS;
     }
 
-    public void setLogOS(List<LogOS> logOS) {
+    public void setLogOS(List<LogOs> logOS) {
         this.logOS = logOS;
+    }
+
+    /**
+     * @return the log
+     */
+    public LogOs getLog() {
+        return log;
+    }
+
+    /**
+     * @param log the log to set
+     */
+    public void setLog(LogOs log) {
+        this.log = log;
     }
     
     

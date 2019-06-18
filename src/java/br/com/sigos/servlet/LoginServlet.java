@@ -5,22 +5,24 @@
  */
 package br.com.sigos.servlet;
 
+import br.com.sigos.jdbc.JDBCCliente;
 import br.com.sigos.jdbc.JDBCFuncionario;
+import br.com.sigos.model.Cliente;
 import br.com.sigos.model.Funcionario;
 import br.com.sigos.model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author 03728827142
+ * @author Guilherme
  */
-public class FuncionarioServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,65 +34,55 @@ public class FuncionarioServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        JDBCFuncionario jf = new JDBCFuncionario();
-        Funcionario funcionario = new Funcionario();
-        
+    throws ServletException, IOException {
+        HttpSession sessao = request.getSession();
         String acao = request.getParameter("acao");
-        if (acao.equals ("nova")) {
-            
-            request.getRequestDispatcher("novoFuncionario.jsp").forward(request, response);
-        } else if(acao.equals("listar") || acao.isEmpty())
-        {
-            List<Funcionario> funcionarios = jf.listar();
-
-            request.setAttribute("funcionarios", funcionarios);
-
-            request.getRequestDispatcher("listaFuncionarios.jsp").forward(request, response);
-        } else if(acao.equals("deletar"))
-        {
-            int id = Integer.parseInt(request.getParameter("id"));
-            jf.deletar(id);
-            
-            response.sendRedirect("FuncionarioServlet?acao=listar");
-        } else if(acao.equals("editar"))
-        {
-            int id = Integer.parseInt(request.getParameter("id"));
-            funcionario = jf.exibir(id);
-            
-            request.setAttribute("funcionario", funcionario);
-            
-            request.getRequestDispatcher("novoFuncionario.jsp").forward(request, response);
-            
-        } else if(acao.equals("salvar"))
-        {
-                       
-        funcionario.setNome(request.getParameter("nome"));
-        funcionario.setFuncao(request.getParameter("funcao"));
-        funcionario.setEmail(request.getParameter("email"));
-        String senha = request.getParameter("senha");
-        Usuario user = new Usuario();
-        String senhac = user.criptografar(senha);
-        funcionario.setSenha(senhac);
-                
         
-        if(request.getParameter("id").equals("0"))
-            {
-                jf.inserir(funcionario);
+        if (acao.equals("login")){
+            Funcionario user = new Funcionario();
+            JDBCFuncionario jf = new JDBCFuncionario();
+            JDBCCliente jc = new JDBCCliente();
+            String email = request.getParameter("logemail");
+            String senha = request.getParameter("logpassword");
+            Usuario u = new Usuario();
+            String senhac = u.criptografar(senha);
+            
+            user = jf.logar(email, senhac);
+           
+            if(user.getNome().equals("")){
+                Cliente cliente = new Cliente();
                 
-            }
-            else
-            {
-                funcionario.setId(Integer.parseInt(request.getParameter("id")));
+                cliente = jc.logar(email, senhac);
                 
-                jf.alterar(funcionario);
-            }
-        
-            response.sendRedirect("FuncionarioServlet?acao=listar");
-        
+                if (cliente.getNome().equals("")){
+                    Boolean msg = true;
+                    request.setAttribute("msg", msg);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                }
+                else {
+                    sessao.setAttribute("cliente", cliente);
+                    request.getRequestDispatcher("homeCliente.jsp").forward(request, response);
+                }
+//                Boolean msg = true;
+//                request.setAttribute("msg", msg);
+//                request.getRequestDispatcher("index.jsp").forward(request, response);
+            } else {
+                
+                sessao.setAttribute("user", user);
+                request.getRequestDispatcher("home.jsp").forward(request, response);
+                
+            } 
+           
+        } else if(acao.equals("logout") || acao.equals("")){
+            sessao.invalidate();
+            response.sendRedirect("index.jsp");
         }
-    }
+            
+            
+}
+        
+        
+        
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

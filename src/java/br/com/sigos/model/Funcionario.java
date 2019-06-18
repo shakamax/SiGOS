@@ -16,6 +16,18 @@ public class Funcionario {
     private String email;
     private String funcao;
 
+    public Funcionario() {
+        this.id = 0;
+        this.nome = "";
+        this.senha = "";
+        this.email = "";
+        this.funcao = "";
+    }
+
+    
+    
+    
+    
     /**
      * @return the nome
      */

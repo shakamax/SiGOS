@@ -13,10 +13,12 @@
 <jsp:include page="Content/Layout/Menu.jsp" />
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:useBean id="user" class="br.com.sigos.model.Funcionario" scope="session" />
 <jsp:useBean id="cliente" class="br.com.sigos.model.Cliente" scope="session" />
 <jsp:useBean id="produto" class="br.com.sigos.model.Produto" scope="session" />
 <jsp:useBean id="servico" class="br.com.sigos.model.Servico" scope="session" />
-
+<jsp:useBean id="lista" class="br.com.sigos.model.ListaEquipamento" scope="session" />
+ 
 
 
 
@@ -27,26 +29,24 @@
     <h1 class="h3 mb-4 text-gray-100"> Nova Ordem de Serviço : </h1>
  </div>
     <div class="card-body">
-    <form class="form-group" method="post" action="listaOS.jsp">
+    <form class="form-group" method="post" action="ordemServicoServlet?acao=criarOS">
         <div class="form-row">
             <div class="col-6">
+           
             <label for="Cliente">Cliente : </label>
-            <select class="js-example-basic-multiple form-control" id="cliente_id" name="nome">
-                <c:forEach items="${clientes}" var="cliente">
-                    <option value="${cliente.id}"> ${cliente.nome} </option>
-                </c:forEach>
-            </select>
+            <input id="cliente" value="${cliente.nome}" class="form-control" disabled="" />
+            <input type="hidden" value="${cliente.id}" name="idcliente" id="clienteid" />
             </div>
             <div class="col-5">
             <label for="listaequipamentos"> Equipamento do Cliente : </label>
-            <select name="ListaEquipamentos" id="listaeq" class="form-control">
-                <option value="Computador Positivo, I5, 200GB, 4MB RAM">Computador Positivo, I5, 200GB, 4MB RAM</option>
-                <option value="Notebook Acer VX5">Notebook Acer VX5 </option>
-                <option value="Impressora HP, Colorida">Impressora HP, Colorida </option>
+            <select name="ListaEquipamentos" id="listaeq" class="form-control" required>
+                <option value=""> Escolha o equipamento </option>
+                <c:forEach items="${listas}" var="lista">
+                    <option value="${lista.id}" > ${lista.equipamento} </option>
+                </c:forEach>
             </select>
             </div>
             <div class="col-1">
-                <label> <img src="Content/img/loading.gif" id="loading" width="70px" height="80px" style="display: none; position: absolute " /> </label>
                 <button type="button" data-whatever="Nome do Cliente" data-toggle="modal" data-target="#modalequipamento" class="btn btn-info bg-gradient-success" title="Novo Equipamento?" style="margin-top: 25%" > 
                    <i class="fas fa-plus-square"> </i></button>
             </div>
@@ -78,9 +78,11 @@
         </div>
         <div class="form-row">
             <div class="col">
-                <label for="os.Defeito"> Defeito : </label>
-                <textarea name="os.Defeito" class="form-control" id="os.Defeito" rows="4">
-                </textarea>
+                <label for="defeito"> Defeito : </label>
+                <img src="Content/img/loading.gif" width="150px" id="loading" height="150px" style="display: none;"/>
+                <input id="defeito" class="form-control" name="defeito" value="" row="3" />
+<!--                <textarea name="os.Defeito" id="defeito" class="form-control" rows="4">
+                </textarea>-->
             </div>
             <div class="col"> 
                 <label>Data de Abertura :</label>
@@ -89,6 +91,7 @@
             </div>
 
         </div>
+                <br>
            <button type="submit" class="btn bg-gradient-success float-right shadow mb-4" style="color: white;"> Abrir O.S.</button>
 
     </form>
@@ -96,7 +99,7 @@
  </div>            
     
              
-  <div class="modal fade" id="modalequipamento" tabindex="-1" role="dialog" aria-labelledby="modalequipamento" aria-hidden="true">
+<div class="modal fade" id="modalequipamento" tabindex="-1" role="dialog" aria-labelledby="modalequipamento" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -106,30 +109,36 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form action="ordemServicoServlet?acao=novoEq" class="form-group" method="post" >
           <div class="form-group">
-            <label for="ListaEquipamentos.Defeito" class="col-form-label">Defeito do equipamento : </label>
-            <textarea class="form-control" name="ListaEquipamentos.Defeito" placeholder="Não inicializa" id="ListaEquipamentos.Defeito"></textarea>
+            <input type="hidden" name="fk_cliente" id="fk_cliente" value="${cliente.id}" />
+            <label for="equipamento" class="col-form-label"> Equipamento : </label>
+            <input type="text" class="form-control" id="equipamento" placeholder="Computador, processador, memória, etc..." name="equipamento" />
           </div>
           <div class="form-group">
-            <label for="ListaEquipamentos.Observacao" class="col-form-label"> Observação : </label>
-            <textarea type="text" class="form-control" row="2" id="ListaEquipamentos.Observacao" placeholder="Arranhão na lateral" name="ListaEquipamentos.Observacao"></textarea>
+            <label for="defeito" class="col-form-label">Defeito do equipamento : </label>
+            <textarea class="form-control" name="defeito" placeholder="Não inicializa" id="defeito"></textarea>
           </div>
             <div class="form-group">
-                <label for="ListaEquipamentos.Acessorios" class="col-form-label"> Acessórios </label>
-                <input id="ListaEquipamentos.Acessosrios" name="ListaEquipamentos.Acessorios" placeholder="Fontes, mouses, cabos..." class="form-control" />
+          <div class="form-group">
+            <label for="observacao" class="col-form-label"> Observação : </label>
+            <textarea type="text" class="form-control" row="2" id="observacao" placeholder="Arranhão na lateral" name="observacao"></textarea>
+          </div>
+            <div class="form-group">
+                <label for="acessorios" class="col-form-label"> Acessórios </label>
+                <input id="acessosrios" name="acessorios" placeholder="Fontes, mouses, cabos..." class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn bg-gradient-warning" data-dismiss="modal" style="color: white;">Cancelar</button>
+                <button type="submit" class="btn bg-gradient-success" style="color: white;">Salvar</button>
+            </div>
             </div>
         </form>
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn bg-gradient-warning" data-dismiss="modal" style="color: white;">Cancelar</button>
-        <button type="button" class="btn bg-gradient-success" style="color: white;">Salvar</button>
-      </div>
     </div>
   </div>
-</div>           
-
-             
+ </div>
+</div>
+            
 
 <div class="modal fade" id="modalServico" tabindex="-1" role="dialog" aria-labelledby="modalServico" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -141,30 +150,30 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="Servico.Nome" class="col-form-label"> Nome : </label>
-            <input class="form-control" type="text" name="Servico.Nome" id="Servico.Nome" />
-          </div>
-          <div class="form-group">
-            <label for="Servico.Valor" class="col-form-label"> Valor : </label>
-            <input type="number" class="form-control" id="Servico.Valor" name="Servico.Valor" />
-          </div>
+        <form class="form-group" method="post" action="ordemServicoServlet?acao=novoServ">
             <div class="form-group">
-                <label for="Servico.Descricao" class="col-form-label"> Descrição : </label>
-                <textarea id="Servico.Descricao" row="2" name="Servico.Descricao" placeholder="Descreva o serviço..." class="form-control"></textarea>
+              <input type="hidden" value="${cliente.id}" name="id" />
+              <label for="nome" class="col-form-label"> Nome : </label>
+              <input class="form-control" type="text" name="nome" id="nome" />
+            </div>
+            <div class="form-group">
+              <label for="valor" class="col-form-label"> Valor : </label>
+              <input type="text" class="form-control price" id="valor" name="valor" />
+            </div>
+              <div class="form-group">
+                  <label for="descricao" class="col-form-label"> Descrição : </label>
+                  <textarea id="descricao" row="2" name="descricao" placeholder="Descreva o serviço..." class="form-control"></textarea>
+              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn bg-gradient-warning" data-dismiss="modal" style="color: white;">Cancelar</button>
+              <button type="submit" class="btn bg-gradient-success" style="color: white;">Salvar</button>
             </div>
         </form>
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn bg-gradient-warning" data-dismiss="modal" style="color: white;">Cancelar</button>
-        <button type="button" class="btn bg-gradient-success" style="color: white;">Salvar</button>
       </div>
     </div>
   </div>
 </div>           
-             
-             
-</div>
-    
+                      
+
+
 <jsp:include page="Content/Layout/Footer.jsp" />

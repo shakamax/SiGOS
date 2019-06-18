@@ -29,6 +29,14 @@ public class Cliente {
     private String complemento;
     private String senha;
 
+    public Cliente() {
+        this.nome = "";
+        this.id = 0;
+    }
+
+    
+    
+    
     /**
      * @return the id
      */

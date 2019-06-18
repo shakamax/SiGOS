@@ -79,7 +79,6 @@ public class JDBCEquipamento {
             ps.setString(5, lista.getDefeito());
             
             ps.executeUpdate();
-            conexao.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCEquipamento.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,7 +106,6 @@ public class JDBCEquipamento {
             
             ps.setInt(1, id);
             ps.executeUpdate();
-            conexao.close();
             
             return id_cliente;
         } catch (SQLException ex) {
@@ -133,7 +131,6 @@ public class JDBCEquipamento {
             lista.setDefeito(rs.getString("defeito"));
             lista.setObservacao(rs.getString("observacoes"));
             
-            conexao.close();
             
             return lista;
         } catch (SQLException ex) {

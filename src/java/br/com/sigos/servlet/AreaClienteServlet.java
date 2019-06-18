@@ -22,9 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author 03728827142
+ * @author 04341474197
  */
-public class ClienteServlet extends HttpServlet {
+public class AreaClienteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,16 +37,15 @@ public class ClienteServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
-                Cliente cliente = new Cliente();
+        Cliente cliente = new Cliente();
                 JDBCCliente jc = new JDBCCliente();
                 
         String acao = request.getParameter("acao");
         if(acao.equals("nova"))
         {
-            request.getRequestDispatcher("novoCliente.jsp").forward(request, response);
+            request.getRequestDispatcher("cadastroAreaCliente.jsp").forward(request, response);
         }
-        else if(acao.equals("listar") || acao.isEmpty())
+        /* else if(acao.equals("listar") || acao.isEmpty())
         {
 
             List<Cliente> clientes = jc.Listar();
@@ -55,7 +54,7 @@ public class ClienteServlet extends HttpServlet {
 
             request.getRequestDispatcher("listaClientes.jsp").forward(request, response);
         }
-        else if(acao.equals("deletar"))
+         else if(acao.equals("deletar"))
         {
             int id = Integer.parseInt(request.getParameter("id"));
             jc.deletar(id);
@@ -70,9 +69,9 @@ public class ClienteServlet extends HttpServlet {
             
             request.setAttribute("cliente", cliente);
             
-            request.getRequestDispatcher("novoCliente.jsp").forward(request, response);
+            request.getRequestDispatcher("cadastroCliente.jsp").forward(request, response);
             
-        }
+        } */
         else if(acao.equals("salvar"))
         {
                     
@@ -95,7 +94,6 @@ public class ClienteServlet extends HttpServlet {
                             //};
                         
                         String data = request.getParameter("dataNascimento");
-                        
                         if (!data.equals("")){
                           Date formato = new SimpleDateFormat("yyyy-MM-dd").parse(data);
                           cliente.setDtNascimento(formato);
@@ -135,13 +133,12 @@ public class ClienteServlet extends HttpServlet {
                             
                             jc.alterar(cliente);
                         }
-                        response.sendRedirect("ClienteServlet?acao=listar");
+                        response.sendRedirect("index.jsp");
                     } catch (ParseException ex) {
                         Logger.getLogger(ClienteServlet.class.getName()).log(Level.SEVERE, null, ex);
                         throw new RuntimeException("Erro ao salvar" + ex.getMessage(), ex);
                     }
         }
-                
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

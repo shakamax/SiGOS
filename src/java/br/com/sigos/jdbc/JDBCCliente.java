@@ -185,5 +185,77 @@ public class JDBCCliente implements ClienteDAO{
            throw new RuntimeException("Erro ao listar Clientes", ex);
         }
     }
+
+    public List<Cliente> buscar(String coluna, String busca) {
+        
+        //String query = "SELECT * FROM cliente WHERE ? LIKE ? ORDER BY dtCadastro DESC;";
+        //String query = "SELECT COUNT(cliente.id_cliente) AS qtd FROM cliente";
+        try {
+            String query = "SELECT * FROM cliente WHERE " + coluna + " LIKE ? ORDER BY dtCadastro DESC";
+            PreparedStatement ps = conexao.prepareStatement(query);
+            //ps.setString(1, coluna);
+            ps.setString(1, "%" + busca + "%");
+
+            ResultSet rs = ps.executeQuery();
+            List<Cliente> clientes = new ArrayList<>();
+
+
+                
+            while(rs.next()){
+                Cliente c = new Cliente();
+            
+                c.setId(rs.getInt("id_cliente"));
+                c.setNome(rs.getString("nome"));
+                c.setEmail(rs.getString("email"));
+                c.setTelefone(rs.getString("telefone"));
+                c.setCPF(rs.getString("cpf"));
+                c.setCidade(rs.getString("cidade"));
+                c.setStatus(rs.getBoolean("status"));
+                
+                
+                clientes.add(c);
+                    
+            }
+           
+            
+            
+            return clientes;
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCCliente.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Erro ao buscar cliente..." + ex.getMessage(), ex);
+        }
+        
+
+    }
+
+    public Cliente logar(String email, String senhac) {
+        
+        String query = "SELECT * FROM cliente WHERE email = ? AND senha = ?;";
+        try {
+            PreparedStatement ps = conexao.prepareStatement(query);
+            ps.setString(1, email);
+            ps.setString(2, senhac);
+            ResultSet rs = ps.executeQuery();
+            Cliente cliente = new Cliente();
+            
+            if(rs.next()){
+            cliente.setId(rs.getInt("id_cliente"));
+            cliente.setNome(rs.getString("nome"));
+            cliente.setEmail(rs.getString("email"));
+            cliente.setSenha(rs.getString("senha"));
+            }
+                    
+            
+            
+            return cliente;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Nenhum usuário encontrado" + ex.getMessage(), ex);
+        }
+        
+    }
+
+    
    
 }

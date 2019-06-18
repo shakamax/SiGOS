@@ -143,5 +143,34 @@ public class JDBCFuncionario implements FuncionarioDAO{
            throw new RuntimeException("Erro ao listar Funcionarios", ex);
         }
     }
+
+    public Funcionario logar(String email, String senhac) {
+        String query = "SELECT * FROM funcionario WHERE email = ? AND senha = ?;";
+        try {
+            PreparedStatement ps = conexao.prepareStatement(query);
+            ps.setString(1, email);
+            ps.setString(2, senhac);
+            ResultSet rs = ps.executeQuery();
+            Funcionario usuario = new Funcionario();
+            
+            if(rs.next()){
+            usuario.setId(rs.getInt("id_funcionario"));
+            usuario.setNome(rs.getString("nome"));
+            usuario.setEmail(rs.getString("email"));
+            usuario.setSenha(rs.getString("senha"));
+            usuario.setFuncao(rs.getString("funcao"));
+            }
+                    
+            
+            
+            return usuario;
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Nenhum usuário encontrado" + ex.getMessage(), ex);
+        }
+        
+        
+        
+    }
     
 }
