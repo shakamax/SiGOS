@@ -14,6 +14,10 @@ public class Servico {
     private Double Valor;
     private String Descricao;
     private int ID;
+    private boolean status;
+    private boolean autorizado;
+    
+    
 
     public int getID() {
         return ID;
@@ -66,6 +70,34 @@ public class Servico {
      */
     public void setDescricao(String Descricao) {
         this.Descricao = Descricao;
+    }
+
+    /**
+     * @return the status
+     */
+    public boolean isStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the autorizado
+     */
+    public boolean isAutorizado() {
+        return autorizado;
+    }
+
+    /**
+     * @param autorizado the autorizado to set
+     */
+    public void setAutorizado(boolean autorizado) {
+        this.autorizado = autorizado;
     }
     
 }

@@ -31,3 +31,6 @@
 </head>
 
 <body id="page-top">
+    <!-- Início do script do widget do Zendesk -->
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=web_widget/sigoscloud.zendesk.com"></script>
+    <!-- Fim do script do widget do Zendesk -->

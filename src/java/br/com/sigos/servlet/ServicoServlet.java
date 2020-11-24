@@ -36,6 +36,8 @@ public class ServicoServlet extends HttpServlet {
             
         Servico serv = new Servico();
         JDBCServico js = new JDBCServico();
+        String msg = "";
+        String tipo = "";
         
         String acao = request.getParameter("acao");
         
@@ -47,16 +49,18 @@ public class ServicoServlet extends HttpServlet {
             if(request.getParameter("id").equals("0")){
                 
                 js.inserir(serv);
+                msg = "inserido";
                 
                 
-                response.sendRedirect("ServicoServlet?acao=listar");
+                response.sendRedirect("ServicoServlet?acao=listar&msg=" + msg);
                 
             } else {
                 serv.setID(Integer.parseInt(request.getParameter("id")));
                 
                 js.alterar(serv);
+                msg = "alterado";
                 
-                response.sendRedirect("ServicoServlet?acao=listar");
+                response.sendRedirect("ServicoServlet?acao=listar&msg=" + msg);
             } 
 
         } else if(acao.equals("listar")){
@@ -64,6 +68,28 @@ public class ServicoServlet extends HttpServlet {
             List<Servico> servicos = new ArrayList<>();
             
             servicos = js.listar();
+            
+            msg = request.getParameter("msg");
+            System.out.println(msg);
+            if(msg != null){
+                if(msg.equals("inserido")){
+                    System.out.println("ta pegando AQUI SENHOR");
+                    msg = "Serviço foi cadastrado com sucesso.";
+                    tipo = "alert-success";
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
+                }else if(msg.equals("alterado")){
+                    msg = "Serviço foi alterado com sucesso.";
+                    tipo = "alert-warning";
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
+                }else if(msg.equals("deletado")){
+                    msg = "Serviço foi excluído com sucesso.";
+                    tipo = "alert-danger";
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
+                }
+            }
             
             request.setAttribute("servicos", servicos);
             request.getRequestDispatcher("listaServicos.jsp").forward(request, response);
@@ -84,8 +110,9 @@ public class ServicoServlet extends HttpServlet {
             serv.setID(Integer.parseInt(request.getParameter("id")));
             
             js.deletar(serv.getID());
+            msg = "deletado";
             
-            response.sendRedirect("ServicoServlet?acao=listar");
+            response.sendRedirect("ServicoServlet?acao=listar&msg=" + msg);
         }
         
         

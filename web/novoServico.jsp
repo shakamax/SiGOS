@@ -10,6 +10,11 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="container">
+    <a href="ServicoServlet?acao=listar" class="btn btn-primary bg-gradient-warning" title="Retornar a página anterior">
+      <i class="fas fa-arrow-circle-left fa-1x "></i> Voltar
+    </a>
+    <br>
+    <br>
     <div class="card">
         <div class="card-header bg-gradient-info btn-success"> Cadastrando Novo Serviço </div>
         <div class="card-body">
@@ -18,12 +23,12 @@
                     <input name="id" id="id" type="hidden" value="${servico.ID}" />
                     <div class="col">
                         <label for="nome"> Nome : </label>
-                        <input type="text" name="nome" id="nome" value="${servico.nome}" class="form-control" />
+                        <input type="text" name="nome" id="nome" required value="${servico.nome}" class="form-control" />
                         
                     </div>
                     <div class="col">
                         <label for="valor"> Valor : </label>
-                        <input type="text" id="valor" name="valor" class="form-control price" value="<fmt:formatNumber value="${servico.valor}" minFractionDigits="2" /> " required />
+                        <input type="text" id="valor" name="valor" required class="form-control price" value="<fmt:formatNumber value="${servico.valor}" minFractionDigits="2" /> " required />
                                
                     </div>
                 </div>
@@ -44,7 +49,5 @@
 </div>
 
     
-</div>
-</div>
 
 <jsp:include page="Content/Layout/Footer.jsp" />

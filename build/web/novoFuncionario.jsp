@@ -10,9 +10,15 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="funcionario" scope="session" class="br.com.sigos.model.Funcionario" />
  <div class="container">
+     
      <c:if test="${user.funcao != 'Administrador' && user.funcao != 'Técnico'}">
          <jsp:forward page="home.jsp" />
      </c:if> 
+    <a href="FuncionarioServlet?acao=listar" class="btn btn-primary bg-gradient-warning" title="Retornar a página anterior">
+      <i class="fas fa-arrow-circle-left fa-1x "></i> Voltar
+    </a>
+     <br>
+     <br>
      
     <div class="card shadow mb-4">
         <div class="card-header bg-gradient-info">
@@ -23,12 +29,12 @@
                 <div class="form-row">
                       <div class="col-7">
                            <label for="nome">Nome:</label>
-                           <input type="text" class="form-control" name="nome" value="${funcionario.nome}" id="nome" />
+                           <input type="text" class="form-control" name="nome" required value="${funcionario.nome}" id="nome" />
                            <input type="hidden" name="id" value="${funcionario.id}" id="id" />
                       </div>
                     <div class="col">
                         <label for="funcao">Função:</label>
-                        <select class="form-control" id="funcao" name="funcao">
+                        <select class="form-control" required id="funcao" name="funcao">
                              <option value="${funcionario.funcao}">Selecione</option>
                              
                              <c:if test="${user.funcao == 'Administrador'}">
@@ -47,18 +53,18 @@
                   <div class="form-row">
                      <div class="col-7">
                            <label for="email">Email:</label>
-                           <input type="email" class="form-control" name="email" value="${funcionario.email}" id="email">
+                           <input type="email" class="form-control" required name="email" value="${funcionario.email}" id="email">
                     </div>
                       <div class="col">
                           <label for="senha">Senha: <span style="color: red;">*</span></label>
-                            <input type="password" class="form-control" name="senha" id="senha">
+                            <input type="password" required class="form-control" name="senha" id="senha">
                       </div>
                   </div>
                   <div class="form-row">
                      <div class="col-7"></div>
                       <div class="col">
                           <label for="senha">Confirme sua Senha: <span id="conf" class="badge badge-danger" style="display: none;">Senhas incompatíveis</span></label>
-                          <input type="password" class="form-control" required="" name="senha2" id="senha2">
+                          <input type="password" class="form-control" required name="senha2" id="senha2">
                       </div>
                   </div>
                   

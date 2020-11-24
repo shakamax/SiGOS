@@ -14,9 +14,15 @@
 <jsp:useBean id="categoria" class="br.com.sigos.model.Categoria" scope="session" />
 <jsp:useBean id="Produto" class="br.com.sigos.model.Produto" scope="session" />
  
-
 <div class="container">
- 
+    <a href="ProdutoServlet?acao=listar" class="btn btn-primary bg-gradient-warning" title="Retornar a página anterior">
+      <i class="fas fa-arrow-circle-left fa-1x "></i> Voltar
+    </a>
+     <c:if test="${msg != ''}">
+        <div id="alerta" class="alert ${tipo}" align="center">
+            <h3> ${msg} </h3>
+        </div>
+    </c:if>
 <div class="card shadow mb-4"> 
     <div class="card-header bg-gradient-info">
         <h1 class="h3 mb-4 text-gray-100">Cadastro de produtos</h1>
@@ -27,7 +33,7 @@
          <input type="hidden" name="id" id="id" value="${Produto.ID}" />
         <div class="col">   
             <label for="codigo"> <b>Código de barra </b> </label> 
-            <input  type="text" name="codigo" class="form-control" value="${Produto.codigo}" >
+            <input  type="text" name="codigo" class="form-control" maxlength="30" value="${Produto.codigo}" >
         </div>
         <div class="col">
             <label for="nome"> <b> Nome </b></label>
@@ -60,7 +66,7 @@
                  </select>
             </div>
             <div class="col-1">
-                 <button type="button" data-toggle="modal" data-target="#modalCategoria" class="btn btn-info bg-gradient-success" title="Novo Serviço?" style="margin-top: 40%" > 
+                 <button type="button" data-toggle="modal" data-target="#modalCategoria" class="btn btn-info bg-gradient-success" title="Nova Categoria?" style="margin-top: 40%" > 
                    <i class="fas fa-plus-square"> </i></button>
             </div>  
                  
@@ -105,6 +111,7 @@
       <div class="modal-body">
           <form action="ProdutoServlet?acao=novaCat" method="post">
           <div class="form-group">
+            <input name="idProduto" value="${Produto.ID}" type="hidden" />
             <label for="categoria.Descricao" class="col-form-label"> Descrição : </label>
             <input class="form-control" type="text" name="descricao" id="descricao" />
           </div>

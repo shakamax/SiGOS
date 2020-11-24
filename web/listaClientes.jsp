@@ -8,18 +8,15 @@
 <jsp:include page="Content/Layout/Menu.jsp" />
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<% 
-    String status;
-    if ( request.getParameter("status") != "") {
- status = "vazio";
-} else {
-    status = "false";
-}
-%>
+
 <jsp:useBean id="cliente" scope="session" class="br.com.sigos.model.Cliente" />
 
 <div class="container-fluid">
-    
+    <c:if test="${msg != ''}">
+        <div id="alerta" class="alert ${tipo}" align="center">
+            <h3> ${msg} </h3>
+        </div>
+    </c:if>
     
     <div class="card shadow mb-4">
         <table class="table table-hover table-striped">
@@ -31,11 +28,10 @@
             <th>CPF</th>
             <th>Cidade</th>
             <th>Status</th>
-            <th>Ações</th>
+            <th>Ações <span class="float-right"><a class="btn btn-primary bg-gradient-primary" href="ClienteServlet?acao=nova" title="Adicionar novo Cliente" > <i class="fas fa-plus-circle"></i> </a></span></th>
             </thead>
             <tbody>
                 <tr>
-                    <% int contador = 1; %>
                     <c:forEach items="${clientes}" var="cliente">
                     <td>${cliente.nome}</td>
                     <td>${cliente.email}</td>
@@ -46,22 +42,22 @@
                         <c:if test="${cliente.status}" > Autenticado </c:if> <c:if test="${!cliente.status}" > Não Atenticado </c:if>
                     </td>
                     <td>
-                        <a href="EquipamentosServlet?acao=listar&id=${cliente.id}"class="btn btn-primary bg-gradient-primary">
+                        <a href="EquipamentosServlet?acao=listar&id=${cliente.id}" title="Equipamentos deste cliente" class="btn btn-primary bg-gradient-primary">
                             <i class="fas fa-laptop-medical"></i>
                         </a>
-                        
-                        <a href="ClienteServlet?acao=editar&id=${cliente.id}" class="btn btn-primary bg-gradient-warning" data-toggle="tooltip" data-placement="top" title="Editar">
-                            <i class="fas fa-user-edit"></i>
-                        </a>
-
-                        <a href="ClienteServlet?acao=deletar&id=${cliente.id}" onclick="return confirm ('Deseja realmente excluir este cliente?')"  class="btn btn-primary bg-gradient-danger" data-toggle="tooltip" data-placement="top" title="Deletar">
-                            <i class="fas fa-trash"></i>
-                        </a>
-
+                    <c:if test="${user.funcao != 'Técnico'}">
+                            <a href="ClienteServlet?acao=editar&id=${cliente.id}" title="Editar este cliente" class="btn btn-primary bg-gradient-warning"  data-toggle="tooltip" data-placement="top" title="Editar">
+                                <i class="fas fa-user-edit"></i>
+                            </a>
+                        <c:if test="${user.funcao != 'Atendente'}">
+                            <a href="ClienteServlet?acao=deletar&id=${cliente.id}" title="Deletar este cliente" onclick="return confirm ('Deseja realmente excluir este cliente?')"  class="btn btn-primary bg-gradient-danger" data-toggle="tooltip" data-placement="top" title="Deletar">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </c:if>
+                    </c:if>
                     </td>
                 </tr>
                 
-                <% contador++; %>
             </c:forEach>
             </tbody>
         </table>   

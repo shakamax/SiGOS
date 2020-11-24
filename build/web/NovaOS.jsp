@@ -23,7 +23,13 @@
 
 
 <div class="container">
- 
+
+    <a href="ordemServicoServlet?acao=listar" class="btn btn-primary bg-gradient-warning" title="Retornar a página anterior">
+      <i class="fas fa-arrow-circle-left fa-1x "></i> Voltar
+    </a>
+     <br>
+     <br>
+    
 <div class="card shadow mb-4">
  <div class="card-header justify-content-between align-items-lg-center flex-row bg-gradient-info">
     <h1 class="h3 mb-4 text-gray-100"> Nova Ordem de Serviço : </h1>
@@ -172,8 +178,8 @@
       </div>
     </div>
   </div>
-</div>           
-                      
+</div>
 
+</div>
 
 <jsp:include page="Content/Layout/Footer.jsp" />

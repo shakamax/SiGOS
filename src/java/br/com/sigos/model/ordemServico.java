@@ -27,6 +27,16 @@ public class ordemServico {
     private String garantia;
     private ListaEquipamento listaEquipamentos;
     private boolean status;
+    private boolean cancelada;
+    private Double valorTotal;
+    
+
+    
+    
+    public ordemServico() {
+        this.garantia = "";
+        this.numOS = 0;
+    }
 
     
     
@@ -133,6 +143,54 @@ public class ordemServico {
      */
     public void setLog(LogOs log) {
         this.log = log;
+    }
+
+    public void retirarServico(Servico serv) {
+        for(int i = 0; i < this.getServicos().size(); i++){
+            Servico s = new Servico();
+            s = this.getServicos().get(i);
+            if(s.getID() == serv.getID()){
+                this.getServicos().remove(s);
+            }
+        }
+    }
+    
+    public void retirarProduto(Produto prod) {
+        for(int i = 0; i < this.getProdutos().size(); i++){
+            Produto p = new Produto();
+            p = this.getProdutos().get(i);
+            if(p.getID() == prod.getID()){
+                this.getProdutos().remove(p);
+            }
+        }
+    }
+
+    /**
+     * @return the valorTotal
+     */
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    /**
+     * @param valorTotal the valorTotal to set
+     */
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    /**
+     * @return the cancelada
+     */
+    public boolean isCancelada() {
+        return cancelada;
+    }
+
+    /**
+     * @param cancelada the cancelada to set
+     */
+    public void setCancelada(boolean cancelada) {
+        this.cancelada = cancelada;
     }
     
     

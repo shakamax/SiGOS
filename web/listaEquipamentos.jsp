@@ -13,9 +13,18 @@
 
 
 <div class="container-fluid">
-    
-    <h1 class="h3 mb-4 text-gray-800">Lista de Equipamentos de <strong> ${cliente.nome} </strong> <span class="float-right"> 
+    <a href="ClienteServlet?acao=listar" class="btn btn-primary bg-gradient-warning" title="Retornar a página anterior">
+      <i class="fas fa-arrow-circle-left fa-1x "></i> Voltar
+    </a>
+    <c:if test="${msg != ''}">
+        <div id="alerta" class="alert ${tipo}" align="center">
+            <h3> ${msg} </h3>
+        </div>
+    </c:if>
+    <h1 class="h3 mb-4 text-gray-800">Lista de Equipamentos de <strong> ${cliente.nome} </strong> <span class="float-right">
+            <c:if test="${user.funcao != 'Técnico'}">  
             <a href="EquipamentosServlet?acao=novo&id=${cliente.id}" title="Novo Equipamento" class="btn btn-primary bg-gradient-primary"> <i class="fas fa-plus-circle"></i> Adicionar Equipamento </a>
+            </c:if>
         </span>   </h1>
  <div class="card shadow mb-4">
  <table class="table table-hover table-striped">  
@@ -39,9 +48,11 @@
                <a class="btn btn-primary bg-gradient-warning" href="EquipamentosServlet?acao=editar&id=${lista.id}" title="Editar" >
                    <i class="fas fa-pencil-alt"></i>
                </a>
-               <a class="btn btn-primary bg-gradient-danger" title="Deletar" href="EquipamentosServlet?acao=deletar&id=${lista.id}" onclick="return confirm('Deseja realmente deletar este equipamento?')">
+               <c:if test="${user.funcao == 'Administrador'}">
+               <a class="btn btn-primary bg-gradient-danger" title="Deletar" href="EquipamentosServlet?acao=deletar&id=${lista.id}" onclick="return confirm('Deseja realmente excluir este equipamento?')">
                    <i class="fas fa-trash-alt"></i>
                </a>
+               </c:if>
            </td>
 
         </tr>

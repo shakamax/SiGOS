@@ -13,8 +13,13 @@ public class Execucao {
     
     private int idOs;
     private int idServ;
-    private int idTecnico;
+    private boolean status;
+    private boolean autorizado;
+    
 
+    
+    
+    
     /**
      * @return the idOs
      */
@@ -44,17 +49,31 @@ public class Execucao {
     }
 
     /**
-     * @return the idTecnico
+     * @return the status
      */
-    public int getIdTecnico() {
-        return idTecnico;
+    public boolean isStatus() {
+        return status;
     }
 
     /**
-     * @param idTecnico the idTecnico to set
+     * @param status the status to set
      */
-    public void setIdTecnico(int idTecnico) {
-        this.idTecnico = idTecnico;
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the autorizado
+     */
+    public boolean isAutorizado() {
+        return autorizado;
+    }
+
+    /**
+     * @param autorizado the autorizado to set
+     */
+    public void setAutorizado(boolean autorizado) {
+        this.autorizado = autorizado;
     }
     
     

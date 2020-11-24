@@ -6,9 +6,12 @@
 <jsp:useBean id="user" scope="session" class="br.com.sigos.model.Funcionario" />
 <jsp:useBean id="cliente" scope="session" class="br.com.sigos.model.Cliente" />
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:if test="${empty user.nome && empty cliente.nome}" >
+
+
+<c:if test="${empty user.nome}" >
+    
     <jsp:forward page="../../index.jsp" />
-    <jsp
+    
 </c:if>
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -29,7 +32,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="home.jsp">
+        <a class="nav-link" href="FuncionarioServlet?acao=dash">
           <i class="fas fa-home"></i>
           <span>Dashboard</span></a>
       </li>
@@ -58,8 +61,6 @@
 
             <a class="collapse-item" href="ordemServicoServlet?acao=listar">Todas Ordens de Serviço</a>
             <a class="collapse-item" href="ordemServicoServlet?acao=clientes">Nova Ordem de Serviço</a>
-            <a class="collapse-item" href="tecnicoOS.jsp">Suas Ordens de Serviço</a>
-
             
           </div>
         </div>
@@ -76,7 +77,9 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Menu Produtos:</h6>
             <a class="collapse-item" href="ProdutoServlet?acao=listar">Todos Produtos</a>
-            <a class="collapse-item" href="ProdutoServlet?acao=novoProduto">Cadastrar Produtoo</a>
+            <c:if test="${user.funcao == 'Administrador'}">
+              <a class="collapse-item" href="ProdutoServlet?acao=novoProduto">Cadastrar Produto</a>
+            </c:if>
           </div>
         </div>
       </li>
@@ -100,7 +103,7 @@
       
       
       
-      <c:if test="${user.funcao == 'Técnico' || user.funcao == 'Administrador'}">
+      
             <!-- Nav Item - FUNCIONÀRIOS MENU -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFunc" aria-expanded="true" aria-controls="collapseClients">
@@ -111,11 +114,13 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"> Menu Funcionários </h6>
             <a class="collapse-item" href="FuncionarioServlet?acao=listar">Todos Funcionários</a>
+            
+            <c:if test="${user.funcao != 'Técnico' && user.funcao != 'Atendente'}"> 
             <a class="collapse-item" href="FuncionarioServlet?acao=nova">Novo Funcionário</a>
+            </c:if>
           </div>
         </div>
       </li>
-      </c:if>
       
       
       
@@ -225,15 +230,15 @@
             </li>
 
 
-
-            <!-- Nav Item - ALERTAS DE ATIVIDADES -->
+<!--
+             Nav Item - ALERTAS DE ATIVIDADES 
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-exclamation-triangle"></i>
-                <!-- CONTADOR DE ALERTAS DE ATIVIDADES -->
+                 CONTADOR DE ALERTAS DE ATIVIDADES 
                 <span class="badge badge-danger badge-counter">2</span>
               </a>
-              <!-- Dropdown - ALERTAS DE ATIVIDADES -->
+               Dropdown - ALERTAS DE ATIVIDADES 
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   ALERTAS DE ATIVIDADES
@@ -263,21 +268,21 @@
                 </a>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
               </div>
-            </li>
+            </li>-->
 
 
 
-
-            <!-- MENSSAGENS DE CLIENTES -->
+<!--
+             MENSSAGENS DE CLIENTES 
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
 
-                <!-- CONTADOR DE MENSAGEM -->
+                 CONTADOR DE MENSAGEM 
                 <span class="badge badge-danger badge-counter">1</span>
               </a>
 
-              <!-- Dropdown DAS MENSAGEM -->
+               Dropdown DAS MENSAGEM 
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
@@ -297,7 +302,7 @@
               </div>
             </li>
 
-            <div class="topbar-divider d-none d-sm-block"></div>
+            <div class="topbar-divider d-none d-sm-block"></div>-->
 
             <!-- Nav Item - USUÁRIO LOGADO -->
             <li class="nav-item dropdown no-arrow">
@@ -307,14 +312,14 @@
               </a>
               <!-- Dropdown - INFORMAÇÕES DO USUÁRIO LOGADO -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="emConstrucao.jsp">
+                <a class="dropdown-item" href="FuncionarioServlet?acao=suaConta">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Sua conta
                 </a>
-
-                <a class="dropdown-item" href="emConstrucao.jsp">
+                
+                <a class="dropdown-item" href="TecnicoServlet?acao=listar">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Atividades
+                  Serviços
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">

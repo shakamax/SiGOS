@@ -9,9 +9,12 @@ import br.com.sigos.jdbc.JDBCCliente;
 import br.com.sigos.jdbc.JDBCFuncionario;
 import br.com.sigos.model.Cliente;
 import br.com.sigos.model.Funcionario;
+import br.com.sigos.model.LogOs;
 import br.com.sigos.model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +39,8 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession sessao = request.getSession();
+        String msg = "";
+        String tipo = "";
         String acao = request.getParameter("acao");
         
         if (acao.equals("login")){
@@ -55,12 +60,19 @@ public class LoginServlet extends HttpServlet {
                 cliente = jc.logar(email, senhac);
                 
                 if (cliente.getNome().equals("")){
-                    Boolean msg = true;
+                    
+                    msg = "E-mail ou senha inválido";
+                    tipo = "alert-danger";
                     request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
                 else {
                     sessao.setAttribute("cliente", cliente);
+                    List<LogOs> logs = new ArrayList<>();
+                    logs = jc.buscarLogs(cliente.getId());
+                    
+                    request.setAttribute("logs", logs);
                     request.getRequestDispatcher("homeCliente.jsp").forward(request, response);
                 }
 //                Boolean msg = true;
@@ -69,8 +81,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 
                 sessao.setAttribute("user", user);
-                request.getRequestDispatcher("home.jsp").forward(request, response);
-                
+                response.sendRedirect("FuncionarioServlet?acao=dash");
             } 
            
         } else if(acao.equals("logout") || acao.equals("")){

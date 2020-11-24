@@ -41,10 +41,12 @@ public class ProdutoServlet extends HttpServlet {
         JDBCProduto jp = new JDBCProduto();
         JDBCCategoria cp = new JDBCCategoria();
         Produto P = new Produto();
-        String acao = request.getParameter("acao");
         Categoria cat = new Categoria();
         ProdutosCategorias prodCat = new ProdutosCategorias();
+        String msg = "";
+        String tipo = "";
         
+        String acao = request.getParameter("acao");
         if (acao.equals("salvar")){
             
             P.setNome(request.getParameter("nome"));
@@ -59,6 +61,7 @@ public class ProdutoServlet extends HttpServlet {
             if ( request.getParameter("id").equals("0")) {
                 
                 idProduto = jp.inserir(P);
+                msg = "inserido";
                 
                 prodCat.setIdProduto(idProduto);
 
@@ -82,7 +85,7 @@ public class ProdutoServlet extends HttpServlet {
                 P.setID(Integer.parseInt(request.getParameter("id")));
                 
                 jp.alterar(P);
-                
+                msg = "alterado";
                 jp.excluirCat(P.getID());
                 
                 prodCat.setIdProduto(P.getID());
@@ -105,18 +108,32 @@ public class ProdutoServlet extends HttpServlet {
             }
             
             
-            response.sendRedirect("ProdutoServlet?acao=listar");
+            response.sendRedirect("ProdutoServlet?acao=listar&msg=" + msg);
         }else if(acao.equals("novaCat")){
             
             cat.setDescricao(request.getParameter("descricao"));
-            
+            int id = Integer.parseInt(request.getParameter("idProduto"));
             cp.inserir(cat);
+            if(id == 0){
+                msg = "catcad";
+                response.sendRedirect("ProdutoServlet?acao=novoProduto&msg=" + msg);
+            }else {
+                msg = "catcad";
+                response.sendRedirect("ProdutoServlet?acao=editar&id="+ id +"&msg=" + msg);
+            }
             
-            
-            request.getRequestDispatcher("ProdutoServlet?acao=novoProduto").forward(request, response);
         }else if (acao.equals("novoProduto")){
             
             List<Categoria> categorias = new ArrayList<>();
+            msg = request.getParameter("msg");
+            if(msg != null){
+                if(msg.equals("catcad")){
+                    msg = "Categoria cadastrada com sucesso.";
+                    tipo = "alert-success";
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
+                }
+            }
             
             categorias = cp.listar();
             request.setAttribute("categorias", categorias);
@@ -125,25 +142,49 @@ public class ProdutoServlet extends HttpServlet {
         }else if (acao.equals("listar")) {
             
             List<Produto> produtos = jp.listar();            
+            msg = request.getParameter("msg");
+            if(msg != null){
+                if(msg.equals("alterado")){
+                    msg = "Produto foi alterado com sucesso!";
+                    tipo = "alert-warning";
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
+                }else if(msg.equals("inserido")){
+                    msg = "Produto foi cadastrado com sucesso!";
+                    tipo = "alert-success";
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
+                }else if(msg.equals("deletado")){
+                    msg = "Produto foi excluído com sucesso.";
+                    tipo = "alert-danger";
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("tipo", tipo);
+                }
+            }
             
             request.setAttribute("produtos", produtos);
-            
             request.getRequestDispatcher("listaProdutos.jsp").forward(request, response);
         } else if (acao.equals("editar")) {
             
             int id = Integer.parseInt(request.getParameter("id"));
             
             P = jp.exibir(id);
+            msg = request.getParameter("msg");
+            if(msg != null){
+                if(msg.equals("catcad")){
+                    msg = "Categoria cadastrada com sucesso.";
+                    tipo = "alert-success";
+                }
+                request.setAttribute("msg", msg);
+                request.setAttribute("tipo", tipo);
+            }
             
             List<Categoria> categorias = new ArrayList<>();
             
             categorias = cp.listar();
             
             request.setAttribute("categorias", categorias);
-            
-            
             request.setAttribute("Produto", P);
-            
             request.getRequestDispatcher("novoProduto.jsp").forward(request, response);
         } else if (acao.equals("deletar")) {
             
@@ -151,7 +192,7 @@ public class ProdutoServlet extends HttpServlet {
             
             jp.excluirCat(id);
             jp.deletar(id);
-            
+            msg = "deletado";
             
             response.sendRedirect("ProdutoServlet?acao=listar");
             

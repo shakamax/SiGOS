@@ -3,18 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/src/java/br/com/sigos/servlet/ordemServicoServlet.java</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/web/Content/Layout/Header.jsp</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/web/index.jsp</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/src/java/br/com/sigos/testes/Seguranca.java</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/src/java/br/com/sigos/jdbc/JDBCOrdemServico.java</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/src/java/br/com/sigos/servlet/AreaClienteServlet.java</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/src/java/br/com/sigos/testes/JDBCOrdemServicoTest.java</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/web/Content/Layout/Menu.jsp</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/web/gerenciarOS.jsp</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/web/cadastroCliente.jsp</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/web/Content/Layout/Footer.jsp</file>
-            <file>file:/C:/Users/03728827142/Documents/NetBeansProjects/SiGOS/src/java/br/com/sigos/factory/ConnectionFactory.java</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/minhaOrdem.jsp</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/src/java/br/com/sigos/servlet/ServicoServlet.java</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/Content/LayoutC/Footer.jsp</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/NovaOS.jsp</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/contaFuncionario.jsp</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/listaServicos.jsp</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/novoFuncionario.jsp</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/Content/Layout/Footer.jsp</file>
+            <file>file:/F:/Guilherme/Documents/NetBeansProjects/SiGOS/web/cadastroCliente.jsp</file>
         </group>
     </open-files>
 </project-private>

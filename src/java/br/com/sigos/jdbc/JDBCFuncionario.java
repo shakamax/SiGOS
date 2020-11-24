@@ -24,14 +24,15 @@ import java.util.logging.Logger;
 public class JDBCFuncionario implements FuncionarioDAO{
     Connection conexao;
     
-    public JDBCFuncionario(){
-        conexao = ConnectionFactory.getConnection();
-    };
+//    public JDBCFuncionario(){
+//        conexao = ConnectionFactory.getConnection();
+//    };
 
     @Override
     public void inserir(Funcionario funcionario) {
-      try {
-        String query = "INSERT INTO funcionario (nome, email, senha, funcao) VALUES (?, ?, ?, ?);";
+        conexao = ConnectionFactory.getConnection();
+        try {
+            String query = "INSERT INTO funcionario (nome, email, senha, funcao) VALUES (?, ?, ?, ?);";
                 PreparedStatement ps = conexao.prepareStatement(query);
                 
                 ps.setString(1, funcionario.getNome());
@@ -41,23 +42,26 @@ public class JDBCFuncionario implements FuncionarioDAO{
 
                 ps.executeUpdate();
                 
-                ps.close();
-                conexao.close();
-                
+            ps.close();
+            conexao.close();
                 
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException("Erro ao inserir funcionário " + ex.getMessage(), ex);
             }
         
     }
 
     @Override
     public void deletar(int id) {
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "DELETE FROM funcionario WHERE id_funcionario = ?";
             PreparedStatement ps = conexao.prepareStatement(query);
             ps.setInt(1, id);
             ps.executeUpdate();
+            
+            
             ps.close();
             conexao.close();
             
@@ -69,6 +73,7 @@ public class JDBCFuncionario implements FuncionarioDAO{
 
     @Override
     public void alterar(Funcionario funcionario) {
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "UPDATE funcionario SET nome = ?, email = ?, senha = ?, funcao = ? WHERE id_funcionario = ?;";
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -91,6 +96,7 @@ public class JDBCFuncionario implements FuncionarioDAO{
 
     @Override
     public Funcionario exibir(int id) {
+        conexao = ConnectionFactory.getConnection();
         Funcionario funcionario = new Funcionario();
         try {
             
@@ -107,6 +113,8 @@ public class JDBCFuncionario implements FuncionarioDAO{
             funcionario.setSenha(rs.getString("senha"));
             funcionario.setFuncao(rs.getString("funcao"));
             
+            ps.close();
+            conexao.close();
             
             return funcionario;
         } catch (SQLException ex) {
@@ -117,6 +125,8 @@ public class JDBCFuncionario implements FuncionarioDAO{
 
     @Override
     public List<Funcionario> listar() {
+        conexao = ConnectionFactory.getConnection();
+        
         List<Funcionario> funcionarios = new ArrayList<Funcionario>();
         try {
             String query = "SELECT * FROM funcionario";
@@ -136,8 +146,11 @@ public class JDBCFuncionario implements FuncionarioDAO{
             
             funcionarios.add(fun);
             }
-            return funcionarios;
             
+            ps.close();
+            conexao.close();
+            
+            return funcionarios;
         } catch (SQLException ex) {
            Logger.getLogger(JDBCFuncionario.class.getName()).log(Level.SEVERE, null, ex);
            throw new RuntimeException("Erro ao listar Funcionarios", ex);
@@ -145,6 +158,8 @@ public class JDBCFuncionario implements FuncionarioDAO{
     }
 
     public Funcionario logar(String email, String senhac) {
+        conexao = ConnectionFactory.getConnection();
+        
         String query = "SELECT * FROM funcionario WHERE email = ? AND senha = ?;";
         try {
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -162,6 +177,8 @@ public class JDBCFuncionario implements FuncionarioDAO{
             }
                     
             
+            ps.close();
+            conexao.close();
             
             return usuario;
         } catch (SQLException ex) {
@@ -169,8 +186,34 @@ public class JDBCFuncionario implements FuncionarioDAO{
             throw new RuntimeException("Nenhum usuário encontrado" + ex.getMessage(), ex);
         }
         
-        
+    }
+
+    public Boolean confirmarSenha(String senha, int id) {
+        conexao = ConnectionFactory.getConnection();
+        String query = "SELECT * FROM funcionario WHERE id_funcionario = ? AND senha = ?;";
+        Boolean senhaConfirmada = false;
+        try {
+            PreparedStatement ps = conexao.prepareStatement("query");
+            ps.setInt(1, id);
+            ps.setString(2, senha);
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                senhaConfirmada = true;
+            }
+            
+            ps.close();
+            conexao.close();
+            return senhaConfirmada;
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Erro ao buscar confirmação no Banco de Dados. " + ex.getMessage(), ex);
+        }
         
     }
+
+    
+    
+    
     
 }

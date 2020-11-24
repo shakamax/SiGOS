@@ -68,7 +68,7 @@
   <script src="Content/js/jquery.priceformat.min.js" type="text/javascript"></script>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" type="text/javascript"></script>
-  
+  <script src="Content/js/select2.min.js" type="text/javascript"></script>
   
 <!--  FORMATO PARA PREÇO-->
   <script type="text/javascript">
@@ -165,10 +165,55 @@ $(".CEP").mask("99999-999");
             }
             
          }
-    
-        
+         
+        function validarEmail() {
+            var email = FormEmail.email.value;
+            var email2 = FormEmail.email2.value;
+            
+            if(email == ""){
+                alert('Por favor, coloque seu e-mail.');
+                FormEmail.senha.focus();
+                return false;
+            }
+            if(email2 == ""){
+                alert('Por favor, confirme seu e-mail.');
+                FormEmail.senha2.focus();
+                return false;
+            }
+            if(email != email2){
+                alert('Confirmação de e-mail falhou, por favor tente novamente.');
+                FormEmail.senha2.focus();
+                $('#conf').show();
+                return false;
+            }
+            
+         }
+         
 </script>
-
+<script>
+    	setTimeout(function(){
+            $('#alerta').fadeOut(2500);
+	}, 5000);
+</script>
+<script>
+    function checarClick(){
+        if(document.getElementById("check1").checked==true){
+            $('#dtab').show();
+            $('#dtfc').hide();
+            busca.dataAbertura.focus();
+        }
+        if(document.getElementById("check2").checked==true){
+            $('#dtab').hide();
+            $('#dtfc').show();
+            busca.dataAbertura.focus();
+        }
+        if(document.getElementById("check3").checked==true){
+            $('#dtab').hide();
+            $('#dtfc').hide();
+            busca.dataAbertura.focus();
+        }
+    }
+</script>
   
 </body>
 

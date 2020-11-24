@@ -12,6 +12,11 @@
 
 <div class="container">
     
+    <c:if test="${msg != ''}">
+        <div id="alerta" class="alert ${tipo}" align="center">
+            <h3> ${msg} </h3>
+        </div>
+    </c:if>
     
     <h1 class="h3" align="center"> Todos os Serviços</h1>
         
@@ -24,7 +29,7 @@
                     <th class="align-items-md-baseline">
                         Ações
                         <span class="float-right"> 
-                            <a class="btn btn-primary bg-gradient-success" href="ServicoServlet?acao=novoServico" title="Adicionar novo produto" > 
+                            <a class="btn btn-primary bg-gradient-primary" href="ServicoServlet?acao=novoServico" title="Adicionar novo serviço" > 
                                 <i class="fas fa-plus-circle"></i> 
                             </a>
                         </span>
@@ -37,10 +42,10 @@
                             <td>${servico.descricao}</td>
                             <td>R$ <fmt:formatNumber value="${servico.valor}" minFractionDigits="2" /> </td>
                             <td align="right">
-                                <a class="btn btn-primary bg-gradient-warning" href="ServicoServlet?acao=editar&id=${servico.ID}">
+                                <a class="btn btn-primary bg-gradient-warning" title="Editar este Serviço" href="ServicoServlet?acao=editar&id=${servico.ID}">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <a class="btn btn-primary bg-gradient-danger" href="ServicoServlet?acao=deletar&id=${servico.ID}" onclick="return confirm('Deseja realmente deletar este produto?')">
+                                <a class="btn btn-primary bg-gradient-danger" href="ServicoServlet?acao=deletar&id=${servico.ID}" title="Deletar este produto" onclick="return confirm('Deseja realmente deletar este Serviço?')">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </td>
@@ -52,8 +57,6 @@
             
         
     </div>
-</div>
     
-</div>
 
 <jsp:include page="Content/Layout/Footer.jsp" />

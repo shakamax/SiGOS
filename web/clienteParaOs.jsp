@@ -33,7 +33,7 @@
                     </div>
                     <!-- PESQUISA CLIENTE -->
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Procurar clientes" name="busca" aria-label="Search" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Procurar por..." name="busca" aria-label="Search" aria-describedby="basic-addon2" />
                      <div class="input-group-append">  
                          <button class="btn btn-primary bg-gradient-info" type="submit">
                          <i class="fas fa-search fa-sm"></i>

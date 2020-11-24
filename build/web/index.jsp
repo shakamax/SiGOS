@@ -32,6 +32,11 @@
       <div class="col-xl-10 col-lg-12 col-md-9">
 
         <div class="card o-hidden border-0 shadow-lg my-5">
+        <c:if test="${msg != ''}">
+            <div id="alerta" class="alert ${tipo}" align="center">
+                <h3> ${msg} </h3>
+            </div>
+        </c:if>
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
@@ -68,9 +73,9 @@
                   </form>
             
                   <hr>
-                  <div class="text-center">
+<!--                  <div class="text-center">
                     <a class="small" href="redefinirSenha.jsp">Esqueceu a senha?</a>
-                  </div>
+                  </div>-->
                   <div class="text-center">
                       <button class="btn btn-primary text-gray-100 bg-gradient-info"  data-toggle="modal" data-target="#modalExemplo">Criar uma conta</button>
 

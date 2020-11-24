@@ -24,11 +24,12 @@ public class JDBCEquipamento {
     
     Connection conexao;
 
-    public JDBCEquipamento() {
-        conexao = ConnectionFactory.getConnection();
-    }
+//    public JDBCEquipamento() {
+//        conexao = ConnectionFactory.getConnection();
+//    }
     
     public List<ListaEquipamento> Listar(int id){
+        conexao = ConnectionFactory.getConnection();
         
         try {
             List<ListaEquipamento> equipamentos = new ArrayList<>();
@@ -56,7 +57,8 @@ public class JDBCEquipamento {
             }
             
             
-            
+            ps.close();
+            conexao.close();
             
             return equipamentos;
         } catch (SQLException ex) {
@@ -66,6 +68,8 @@ public class JDBCEquipamento {
     } 
 
     public void inserir(ListaEquipamento lista) {
+        conexao = ConnectionFactory.getConnection();
+        
         try {
             String query = "INSERT INTO listaequipamentos (fk_cliente, equipamento, acessorios, observacoes, defeito)" +
                     " VALUES (?, ?, ?, ?, ?);";
@@ -80,6 +84,10 @@ public class JDBCEquipamento {
             
             ps.executeUpdate();
             
+            
+            ps.close();
+            conexao.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCEquipamento.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Erro ao inserir equipamento no banco de dados" + ex.getMessage(), ex);
@@ -89,6 +97,7 @@ public class JDBCEquipamento {
     }
     
     public int deletar(int id){
+        conexao = ConnectionFactory.getConnection();
         
         try {
             String select = "SELECT fk_cliente FROM listaequipamentos WHERE id_lista = ?;";
@@ -107,6 +116,11 @@ public class JDBCEquipamento {
             ps.setInt(1, id);
             ps.executeUpdate();
             
+            
+            
+            ps.close();
+            conexao.close();
+            
             return id_cliente;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCEquipamento.class.getName()).log(Level.SEVERE, null, ex);
@@ -115,6 +129,7 @@ public class JDBCEquipamento {
     }
 
     public ListaEquipamento exibir(int id) {
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "SELECT * FROM listaequipamentos WHERE id_lista = ?;";
             PreparedStatement pro = conexao.prepareStatement(query);
@@ -131,7 +146,8 @@ public class JDBCEquipamento {
             lista.setDefeito(rs.getString("defeito"));
             lista.setObservacao(rs.getString("observacoes"));
             
-            
+            pro.close();
+            conexao.close();
             return lista;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCEquipamento.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,7 +156,7 @@ public class JDBCEquipamento {
     }
 
     public void alterar(ListaEquipamento lista) {
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "UPDATE listaequipamentos SET equipamento = ?, acessorios =  ?, observacoes = ?, defeito = ? WHERE (`id_lista` = ?);";
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -154,7 +170,8 @@ public class JDBCEquipamento {
             ps.executeUpdate();
             
             
-            
+            ps.close();
+            conexao.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCEquipamento.class.getName()).log(Level.SEVERE, null, ex);
@@ -164,7 +181,30 @@ public class JDBCEquipamento {
                 
         
     }
-    
+
+    public Boolean verOrdens(int id) {
+        conexao = ConnectionFactory.getConnection();
+        String query = "SELECT * FROM ordemservico WHERE fk_equip = ?;";
+        Boolean podeDeletar = true;
+        try {
+            PreparedStatement ps = conexao.prepareStatement(query);
+            ps.setInt(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                podeDeletar = false;
+            }
+            
+            ps.close();
+            conexao.close();
+            return podeDeletar;
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCEquipamento.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ao buscar equipamentos ligados a Ordem " + ex.getMessage(), ex);
+        }
+    }
+
+   
     
     
 }

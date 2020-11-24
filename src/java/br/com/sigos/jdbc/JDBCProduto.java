@@ -28,15 +28,16 @@ public class JDBCProduto implements ProdutoDao {
 
     Connection conexao;
     
-    public JDBCProduto() {
-        conexao = ConnectionFactory.getConnection();
-    }
+//    public JDBCProduto() {
+//        conexao = ConnectionFactory.getConnection();
+//    }
 
     
     
     @Override
     public int inserir(Produto produto) {
-            int chave = 0;
+        conexao = ConnectionFactory.getConnection();
+        int chave = 0;
         try {
             String query = "INSERT INTO produto (nome, localizacao, valor, codigoBarra, qtd, descricao) VALUES (?,?,?,?,?,?);";
             PreparedStatement ps = conexao.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -56,6 +57,9 @@ public class JDBCProduto implements ProdutoDao {
                chave = rs.getInt(1);
             }    
             
+            
+            ps.close();
+            conexao.close();
             return chave;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProduto.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,7 +72,7 @@ public class JDBCProduto implements ProdutoDao {
 
     @Override
     public void deletar(int id) {
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "DELETE FROM produto WHERE id_produto = ?";
             
@@ -78,6 +82,8 @@ public class JDBCProduto implements ProdutoDao {
             
             ps.executeUpdate();
             
+            ps.close();
+            conexao.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProduto.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +95,7 @@ public class JDBCProduto implements ProdutoDao {
 
     @Override
     public void alterar(Produto produto) {
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "UPDATE produto SET nome= ?, localizacao= ?, valor= ?, codigoBarra= ?, qtd= ?,"
                     + " descricao= ?\n" +
@@ -106,7 +112,8 @@ public class JDBCProduto implements ProdutoDao {
             ps.setInt(7, produto.getID());
             
             ps.executeUpdate();
-            
+            ps.close();
+            conexao.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProduto.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,7 +125,7 @@ public class JDBCProduto implements ProdutoDao {
 
     @Override
     public Produto exibir(int id) {
-            
+        conexao = ConnectionFactory.getConnection();
         Produto prod = new Produto();
         
             String query = "SELECT produto.*, categoria.id_categoria, categoria.descricao as catDesc FROM produto " +
@@ -154,7 +161,8 @@ public class JDBCProduto implements ProdutoDao {
             
             prod.setCategoria(categorias);
             
-            
+            ps.close();
+            conexao.close();
             return prod;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProduto.class.getName()).log(Level.SEVERE, null, ex);
@@ -165,6 +173,8 @@ public class JDBCProduto implements ProdutoDao {
 
     @Override
     public List<Produto> listar() {
+        conexao = ConnectionFactory.getConnection();
+        
         
         List<Produto> produtos = new ArrayList<>();
         int index = -1;
@@ -175,7 +185,7 @@ public class JDBCProduto implements ProdutoDao {
             String query = "SELECT produto.*, REPLACE(GROUP_CONCAT(categoria.descricao),\",\",\" | \") as descricoes_cat FROM produto \n" +
             "LEFT JOIN produtoscategorias ON produto.id_produto = produtoscategorias.id_produto \n" +
             "LEFT JOIN categoria ON produtoscategorias.id_categoria = categoria.id_categoria\n" +
-            "group by produto.id_produto\n" +
+            "WHERE produto.qtd > 0 group by produto.id_produto\n" +
             "ORDER BY PRODUTO.id_produto;";
             
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -210,6 +220,8 @@ public class JDBCProduto implements ProdutoDao {
                 
             }
             
+            ps.close();
+            conexao.close();
             return produtos;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProduto.class.getName()).log(Level.SEVERE, null, ex);
@@ -222,6 +234,7 @@ public class JDBCProduto implements ProdutoDao {
     
     
     public void inserirCategoria(ProdutosCategorias prodCat) {
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "INSERT INTO produtoscategorias (id_produto, id_categoria) VALUES (?, ?);";
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -231,7 +244,8 @@ public class JDBCProduto implements ProdutoDao {
             
             ps.executeUpdate();
             
-            
+            ps.close();
+            conexao.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProduto.class.getName()).log(Level.SEVERE, null, ex);
@@ -241,7 +255,7 @@ public class JDBCProduto implements ProdutoDao {
     }
     
     public void excluirCat(int id) {
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "DELETE FROM produtoscategorias WHERE id_produto = ?;";
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -250,6 +264,8 @@ public class JDBCProduto implements ProdutoDao {
             
             ps.executeUpdate();
             
+            ps.close();
+            conexao.close();
         } catch (SQLException ex) {
             Logger.getLogger(JDBCProduto.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Erro ao passo de exclusão da atualização de categorias" + ex.getMessage(), ex);

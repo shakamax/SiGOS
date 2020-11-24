@@ -11,6 +11,11 @@
 
 
 <div class="container">
+    <a href="EquipamentosServlet?acao=listar&id=${cliente.id}" class="btn btn-primary bg-gradient-warning" title="Retornar a página anterior">
+      <i class="fas fa-arrow-circle-left fa-1x "></i> Voltar
+    </a>
+     <br>
+     <br>
     <div class="card shadow mb-4">
         <div class="card-header bg-gradient-info text-gray-100">
             Novo equipamento de ${cliente.nome}
@@ -20,7 +25,7 @@
                     <div class="form-row">
                         <div class="col">
                             <label for="equipamento">Equipamento</label>
-                            <input type="text" name="equipamento" class="form-control" value="${lista.equipamento}">
+                            <input type="text" name="equipamento" required class="form-control" value="${lista.equipamento}">
                             <input name="id" id="id" type="hidden" value="${lista.id}" />
                         </div>
                     </div>
@@ -28,7 +33,7 @@
                     <div class="form-row">
                         <div class="col">
                             <label for="observacao">Observação</label>
-                            <input text="text" name="observacao" id="observacao" value="${lista.observacao}" class="form-control">
+                            <input text="text" name="observacao"  id="observacao" value="${lista.observacao}" class="form-control">
                         </div>
                         <div class="col">
                             <label for="acessorios">Acessórios</label>
@@ -38,7 +43,7 @@
                     <div class="form-row">
                         <div class="col">
                             <label for="defeito">Defeito</label>
-                            <textarea class="form-control" name="defeito" id="defeito" rows="3" value="" >${lista.defeito}</textarea>
+                            <textarea class="form-control" name="defeito" id="defeito" rows="3" >${lista.defeito}</textarea>
                          </div>
 <!--                     <div class="col">
                             <label for="exemplo">Foto</label>

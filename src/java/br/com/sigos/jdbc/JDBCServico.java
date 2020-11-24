@@ -26,13 +26,13 @@ public class JDBCServico {
     
     Connection conexao;
 
-    public JDBCServico() {
-        conexao = ConnectionFactory.getConnection();        
-    }
+//    public JDBCServico() {
+//        conexao = ConnectionFactory.getConnection();        
+//    }
     
     
     public void inserir(Servico serv){
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "INSERT INTO servico (nome, descricao, valor) VALUES (?, ?, ?);";
             
@@ -44,6 +44,9 @@ public class JDBCServico {
             
             ps.executeUpdate();
             
+            ps.close();
+            conexao.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCServico.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Erro ao inserir novo serviço" + ex.getMessage(), ex);
@@ -52,7 +55,7 @@ public class JDBCServico {
     
     
     public void deletar(int id){
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "DELETE FROM servico WHERE id_servico = ?";
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -60,7 +63,8 @@ public class JDBCServico {
             ps.setInt(1, id);
             
             ps.executeUpdate();
-                
+            ps.close();
+            conexao.close(); 
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCServico.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,7 +75,7 @@ public class JDBCServico {
     }
 
     public List<Servico> listar() {
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "SELECT * FROM servico;";
             
@@ -92,7 +96,8 @@ public class JDBCServico {
                 
             }
             
-            
+            ps.close();
+            conexao.close();
             
             return servicos;
         } catch (SQLException ex) {
@@ -102,7 +107,7 @@ public class JDBCServico {
     }
 
     public Servico exibir(int id) {
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "SELECT * FROM servico WHERE id_servico = ?";
             
@@ -113,15 +118,16 @@ public class JDBCServico {
             Servico serv = new Servico();
             
             
-            rs.next();
+            if(rs.next()){
+                serv.setID(rs.getInt("id_servico"));
+                serv.setNome(rs.getString("nome"));
+                serv.setValor(rs.getDouble("valor"));
+                serv.setDescricao(rs.getString("descricao"));
+            }
             
-            serv.setID(rs.getInt("id_servico"));
-            serv.setNome(rs.getString("nome"));
-            serv.setValor(rs.getDouble("valor"));
-            serv.setDescricao(rs.getString("descricao"));
             
-            
-            
+            ps.close();
+            conexao.close();
             return serv;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCServico.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,7 +137,7 @@ public class JDBCServico {
     }
     
     public void alterar(Servico serv){
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "UPDATE servico SET nome = ?, descricao = ?, valor = ? WHERE id_servico = ?;";
             
@@ -144,20 +150,14 @@ public class JDBCServico {
             
             ps.executeUpdate();
             
+            ps.close();
+            conexao.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCServico.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Erro ao atualizar serviço" + ex.getMessage(), ex);
         }
-        
-        
-        
-        
     }
-    
-    
-    
-    
     
     
 }

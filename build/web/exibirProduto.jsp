@@ -90,7 +90,9 @@
         <div class="row">
             <div class="col-5"> &nbsp; </div>
             <div class="col-6">
+                <c:if test="${user.funcao == 'Administrador'}">    
                 <button type="submit" class="btn btn-primary bg-gradient-warning col-3">Editar</button>
+                </c:if>
             </div>
             <div class="col-5"> &nbsp; </div>
         </div>

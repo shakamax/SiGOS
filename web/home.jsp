@@ -4,7 +4,8 @@
     Created on : 24/04/2019, 19:48:25
     Author     : 03728827142
 --%>
-
+<jsp:useBean id="rd" scope="session" class="br.com.sigos.model.relatorioDash" />
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="Content/Layout/Header.jsp" />
 <jsp:include page="Content/Layout/Menu.jsp" />
 
@@ -17,19 +18,19 @@
         <div class="card-body">
                 <!-- GRÁFICOS DE BARRA -->
                 <div class="card-body">
-                  <h4 class="small font-weight-bold">O.S Recem Abertas <span class="float-right">10%</span></h4>
+                    <h4 class="small font-weight-bold">O.S Abertas <span class="float-right"><fmt:formatNumber value="${rd.porcAbertas}" maxFractionDigits="0" />%</span></h4>
                   <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: ${rd.porcAbertas}%" aria-valuenow="${rd.qtdAbertas}" aria-valuemin="0" aria-valuemax="${rd.qtdMax}"></div>
                   </div>
-                  <h4 class="small font-weight-bold">O.S Em andamento <span class="float-right">10%</span></h4>
+                    <h4 class="small font-weight-bold">O.S canceladas <span class="float-right"><fmt:formatNumber value="${rd.porcCanceladas}" maxFractionDigits="0" />%</span></h4>
                   <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-danger" role="progressbar" style="width: ${rd.porcCanceladas}%" aria-valuenow="${rd.qtdCanceladas}" aria-valuemin="0" aria-valuemax="${rd.qtdMax}"></div>
+                  </div>
+                      <h4 class="small font-weight-bold">O.S Concluídas <span class="float-right"><fmt:formatNumber value="${rd.porcFechadas}" maxFractionDigits="0" />%</span></h4>
+                  <div class="progress">
+                      <div class="progress-bar bg-success" role="progressbar" style="width: ${rd.porcFechadas}%" aria-valuenow="${rd.qtdFechadas}" aria-valuemin="0" aria-valuemax="${rd.qtdMax}"></div>
                   </div>
                   
-                  <h4 class="small font-weight-bold">O.S Concluídas <span class="float-right">80%</span></h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
                 </div>
               </div>
             

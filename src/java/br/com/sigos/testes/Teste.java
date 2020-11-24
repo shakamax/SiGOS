@@ -22,11 +22,10 @@ public class Teste {
     public static void main(String[] args) {
         JDBCProduto prod =  new JDBCProduto();
         List<Produto> produtos = prod.listar();
-        
-        for(Produto produto : produtos) {
-            System.out.println(produto.getNome() + " | " + produto.getCategorias());
-            System.out.println("---------");
-            
+
+        String msg = "ok";
+        if(msg == "ok"){
+            System.out.println("Certo.");
         }
     }
     

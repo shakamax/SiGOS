@@ -25,13 +25,13 @@ public class JDBCCategoria implements CategoriaDao {
 
     Connection conexao;
         
-    public JDBCCategoria() {
-        conexao = ConnectionFactory.getConnection();
-    }
+//    public JDBCCategoria() {
+//        conexao = ConnectionFactory.getConnection();
+//    }
     
     @Override
     public void inserir(Categoria categoria) {
-        
+        conexao = ConnectionFactory.getConnection();
         try {
             String query = "INSERT INTO categoria (descricao) VALUES (?);";
             PreparedStatement ps = conexao.prepareStatement(query);
@@ -55,6 +55,7 @@ public class JDBCCategoria implements CategoriaDao {
 
     @Override
     public void deletar(int id) {
+        conexao = ConnectionFactory.getConnection();
         
         try {
             String query = "DELETE FROM categoria WHERE id = ?";
@@ -62,13 +63,14 @@ public class JDBCCategoria implements CategoriaDao {
             
             ps.setInt(1, id);
             ps.executeUpdate();
+            
+            
+            
             ps.close();
             conexao.close();
-            
-            
-            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCCategoria.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Erro ao excluir categorias... " + ex.getMessage(), ex);
         }
         
         
@@ -86,6 +88,8 @@ public class JDBCCategoria implements CategoriaDao {
 
     @Override
     public List<Categoria> listar() {
+        conexao = ConnectionFactory.getConnection();
+        
         List<Categoria> categorias = new ArrayList<Categoria>();
         
         try {
@@ -107,7 +111,10 @@ public class JDBCCategoria implements CategoriaDao {
                 categorias.add(c);
                 
             }
-                        
+                     
+            ps.close();
+            conexao.close();
+            
             return categorias;
         } catch (SQLException ex) {
             Logger.getLogger(JDBCCategoria.class.getName()).log(Level.SEVERE, null, ex);

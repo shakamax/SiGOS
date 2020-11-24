@@ -17,6 +17,7 @@ public class Produto {
     /**
      * @return the categoria
      */
+    private int ID;
     private String nome;
     private double Valor;
     private int Quantidade;
@@ -26,7 +27,10 @@ public class Produto {
     private String categorias; 
     private String id_cat; 
     private String localizacao;
-    private int ID;
+    private boolean autorizado;
+    private boolean status;
+    
+    
 
     public int getID() {
         return ID;
@@ -170,6 +174,34 @@ public class Produto {
         this.localizacao = "";
         this.nome = "";
         
+    }
+
+    /**
+     * @return the autorizado
+     */
+    public boolean isAutorizado() {
+        return autorizado;
+    }
+
+    /**
+     * @param autorizado the autorizado to set
+     */
+    public void setAutorizado(boolean autorizado) {
+        this.autorizado = autorizado;
+    }
+
+    /**
+     * @return the status
+     */
+    public boolean isStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(boolean status) {
+        this.status = status;
     }
     
 }
